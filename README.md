@@ -1,11 +1,11 @@
 # docker_minio
 
 ```
-git clone https://github.com/codesshaman/docker_walg.git
+git clone https://github.com/codesshaman/docker_minio.git
 ```
 
 ```
-cd docker_walg
+cd docker_minio
 ```
 
 ```
@@ -25,8 +25,3 @@ make build
 ```
 
 And use
-
-``make incr`` for incremental backup,
-``make full`` for full backup,
-``make latest`` for restore latest backup
-# docker_minio
