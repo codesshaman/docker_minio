@@ -38,7 +38,6 @@ help:
 	@echo -e "$(WARN_COLOR)- make incr			: Create incremental backup"
 	@echo -e "$(WARN_COLOR)- make latest			: Restore latest backup"
 	@echo -e "$(WARN_COLOR)- make re			: Rebuild configuration"
-	@echo -e "$(WARN_COLOR)- make test			: Build test container"
 	@echo -e "$(WARN_COLOR)- make ps			: View configuration"
 	@echo -e "$(WARN_COLOR)- make push			: Push changes to the github"
 	@echo -e "$(WARN_COLOR)- make clean			: Cleaning configuration$(NO_COLOR)"
@@ -75,11 +74,11 @@ condb:
 
 con:
 	@printf "$(OK_COLOR)==== Connect to database ${name}... ====$(NO_COLOR)\n"
-	@docker exec -it wal-g-test bash
+	@docker exec -it minio bash
 
 conn:
 	@printf "$(OK_COLOR)==== Connect to database ${name}... ====$(NO_COLOR)\n"
-	@docker exec -it wal-g-test bash
+	@docker exec -it minio bash
 
 down:
 	@printf "$(ERROR_COLOR)==== Stopping configuration ${name}... ====$(NO_COLOR)\n"
@@ -125,10 +124,6 @@ push:
 show:
 	@printf "$(BLUE)==== Current environment variables... ====$(NO_COLOR)\n"
 	@env | grep -E 'POSTGRES_|PG_DATA|RESTORE_BACKUP_NAME' || true
-
-test:
-	@printf "$(WARN_COLOR)==== Start test docker iamge... ====$(NO_COLOR)\n"
-	@docker-compose run --rm wal-g-test
 
 clean: down
 	@printf "$(ERROR_COLOR)==== Cleaning configuration ${name}... ====$(NO_COLOR)\n"
