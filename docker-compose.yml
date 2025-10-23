@@ -5,13 +5,34 @@ services:
     image: $MINIO_IMAGE
     container_name: $MINIO_NAME
     ports:
-      - "$API_PORT:9000"  # API
-      - "$GUI_PORT:9001"  # Console UI
+      - "$API_PORT:9000"
+      - "$GUI_PORT:9001"
     environment:
       MINIO_ROOT_USER: $MINIO_USER
       MINIO_ROOT_PASSWORD: $MINIO_PASS
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     command: server /data --console-address ":9001"
     volumes:
       - minio_data:/data
+
+  minio-init:
+    image: $MINIO_IMAGE
+    container_name: minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+        echo '⏳ Waiting for MinIO...' &&
+        sleep 5 &&
+        mc alias set local http://minio:$API_PORT $MINIO_USER $MINIO_PASS &&
+        mc mb --ignore-existing local/$BUCKET_NAME &&
+        echo '✅ Bucket $BUCKET_NAME created or already exists.'
+      "
+
 volumes:
   minio_data:

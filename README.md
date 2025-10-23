@@ -25,3 +25,9 @@ make build
 ```
 
 And use
+
+```
+make bucket <bucket_name>
+```
+
+for create new bucket
